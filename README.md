@@ -1,27 +1,78 @@
-# Ember-picturefill
+# `ember-picturefill`
 
-This README outlines the details of collaborating on this Ember addon.
+A small Ember library to better integrate with [Picturefill][picturefill]
+
+## Why?
+
+Picturefill automatically runs when the page loads, looking for image tags that have the attributes that it polyfills.  However, what happens if you soft-transition to a page, or have an image that is only shown under some circumstances?  Chances are, Picturefill will be unable to find the image to polyfill the behavior correctly.  This addon fixes the problem by providing a tiny wrapper around the `img` tag that triggers the Picturefill polyfill after the image enters the DOM, so that the polyfill is always applied.
+
+## What does it do?
+
+- Provides a component that can be used in place of `<img>` that ensures that Picturefill knows when the element is made visible
+- Provides a service that can be used to manually check the page for new `<img>` elements
+- Provides an optional `HTMLBars` transformation that can change `<img>` tags into the wrapper component automatically, if the `srcset` or `sizes` attributes are present
 
 ## Installation
 
-* `git clone <repository-url>` this repository
-* `cd ember-picturefill`
-* `npm install`
-* `bower install`
+Standard Ember addon stuff:
 
-## Running
+```bash
+ember install ember-picturefill
+```
 
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
+## Usage
 
-## Running Tests
+### Using the wrapper component directly
 
-* `npm test` (Runs `ember try:each` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
+```hbs
+{{pf-img srcset="examples/images/image-384.jpg 1x, examples/images/image-768.jpg 2x"}}
+```
 
-## Building
+### Using the `HTMLBars` transformation (enabled by default)
 
-* `ember build`
+Turns this:
 
-For more information on using ember-cli, visit [http://ember-cli.com/](http://ember-cli.com/).
+```hbs
+<img srcset="examples/images/image-384.jpg 1x, examples/images/image-768.jpg 2x" />
+```
+
+Into the above example automatically
+
+### Invoking the polyfill directly
+
+The `picturefill` service can invoke the polyfill with the `refresh` method, which is called with the same arguments as the `picturefill()` function that the polyfill provides.
+
+```javascript
+import Ember from 'ember';
+
+const {
+  Component,
+  inject: { service }
+} = Ember;
+
+export default Component.extend({
+  picturefill: service(),
+
+  actions: {
+    onSomeAction() {
+      this.get('picturefill').refresh();
+    }
+  }
+});
+```
+
+## Good Stuff to Know
+
+There are a few other nice things about this wrapper that I wanted to highlight:
+
+- It pulls in the Picturefill library from NPM instead of Bower and automatically imports it into your app.  The minified version is automatically used for production builds.
+- The polyfill will only be run against the DOM at most one time per `render` cycle to cut down on unnecessary work
+
+## Todo
+
+- [ ] Provide a list of plugins that you also want to import
+- [ ] Proper Fastboot support
+    - [ ] Exclude the library in the Fastboot build
+    - [ ] No-op the `refresh` function in the Fastboot environment
+
+[picturefill]: https://github.com/scottjehl/picturefill
