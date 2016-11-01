@@ -61,6 +61,24 @@ export default Component.extend({
 });
 ```
 
+## Configuration
+
+You can configure `ember-picturefill` in your `ember-cli-build.js` file like so. Values displayed are the defaults.
+
+```javascript
+var EmberApp = require('ember-cli/lib/broccoli/ember-app');
+
+module.exports = function(defaults) {
+  var app = new EmberApp(defaults, {
+    picturefill: {
+      disableTransform: false // Disable the HTMLBars transformation
+    }
+  });
+
+  return app.toTree();
+};
+```
+
 ## Good Stuff to Know
 
 There are a few other nice things about this wrapper that I wanted to highlight:
