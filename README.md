@@ -1,5 +1,7 @@
 # `ember-picturefill`
 
+[![Ember Versions](https://embadge.io/v1/badge.svg?start=2.4.0)](#compatibility-note)
+
 A small Ember library to better integrate with [Picturefill][picturefill]
 
 ## Why?
@@ -92,5 +94,9 @@ There are a few other nice things about this wrapper that I wanted to highlight:
 - [ ] Proper Fastboot support
     - [ ] Exclude the library in the Fastboot build
     - [ ] No-op the `refresh` function in the Fastboot environment
+
+## Compatibility Note
+
+Officially, this addon supports Ember 2.4 and up.  The `{{pf-img}}` component should work on things lower than that, but there were issues with the HTMLBars transform.  If you need support below 2.4, try disabling the transform and you should be fine.
 
 [picturefill]: https://github.com/scottjehl/picturefill
