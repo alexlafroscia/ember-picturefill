@@ -24,6 +24,18 @@
             "env": {
                 "DEBUG": "ember-picturefill:*"
             }
+        },
+        {
+            "name": "mocha",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/node_modules/.bin/_mocha",
+            "cwd": "${workspaceRoot}",
+            "sourceMaps": false,
+            "outDir": null,
+            "env": {
+                "DEBUG": "ember-picturefill:*"
+            }
         }
     ]
 }

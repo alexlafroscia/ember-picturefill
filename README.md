@@ -24,25 +24,20 @@ ember install ember-picturefill
 
 ## Usage
 
-### Using the wrapper component directly
+### Using the component
+
+The semantics of the `pf-img` component are exactly the same as the `<img>` HTML tag. Any attributes set on the component will be set on the underlying `<img>` tag.
 
 ```hbs
-{{pf-img srcset="examples/images/image-384.jpg 1x, examples/images/image-768.jpg 2x"}}
+{{pf-img
+    alt="Some cool image"
+    src="examples/images/image-384.jpg"
+    srcset="examples/images/image-384.jpg 1x, examples/images/image-768.jpg 2x"}}
 ```
-
-### Using the `HTMLBars` transformation (enabled by default)
-
-Turns this:
-
-```hbs
-<img srcset="examples/images/image-384.jpg 1x, examples/images/image-768.jpg 2x" />
-```
-
-Into the above example automatically
 
 ### Invoking the polyfill directly
 
-The `picturefill` service can invoke the polyfill with the `refresh` method, which is called with the same arguments as the `picturefill()` function that the polyfill provides.
+If you need to invoke the `picturefill` function directly, you can use the `refresh` method on the `picturefill` service:
 
 ```javascript
 import Ember from 'ember';
@@ -63,6 +58,26 @@ export default Component.extend({
 });
 ```
 
+However, do note that *this is not required*, since the polyfill will be invoked automatically after the component is inserted into the DOM.
+
+## `HTMLBars` transformations
+
+### `<img>` transformation
+
+The `<img>` tag transformation turns `<img>` tags with a `srcset` property into a `{{pf-img}}` automatically.  For example, this:
+
+```html
+<img
+    srcset="examples/images/image-384.jpg 1x, examples/images/image-768.jpg 2x" />
+```
+
+Turns into:
+
+```hbs
+{{pf-img
+    srcset="examples/images/image-384.jpg 1x, examples/images/image-768.jpg 2x"}}
+```
+
 ## Configuration
 
 You can configure `ember-picturefill` in your `ember-cli-build.js` file like so. Values displayed are the defaults.
@@ -73,7 +88,7 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
     picturefill: {
-      disableTransform: false // Disable the HTMLBars transformation
+      imgTagTransform: false // Enable/disable the `<img>` -> `{{pf-img}}` transform
     }
   });
 
@@ -87,13 +102,6 @@ There are a few other nice things about this wrapper that I wanted to highlight:
 
 - It pulls in the Picturefill library from NPM instead of Bower and automatically imports it into your app.  The minified version is automatically used for production builds.
 - The polyfill will only be run against the DOM at most one time per `render` cycle to cut down on unnecessary work
-
-## Todo
-
-- [ ] Provide a list of plugins that you also want to import
-- [ ] Proper Fastboot support
-    - [ ] Exclude the library in the Fastboot build
-    - [ ] No-op the `refresh` function in the Fastboot environment
 
 ## Compatibility Note
 

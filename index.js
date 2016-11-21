@@ -5,7 +5,7 @@ var log = require('debug')('ember-picturefill:addon');
 var path = require('path');
 var mergeTrees = require('broccoli-merge-trees');
 var Funnel = require('broccoli-funnel');
-var EmberPicturefillPlugin = require('./lib/htmlbars-plugin');
+var ImgTagTransform = require('./lib/htmlbars-plugins/img-tag-transform');
 
 var pictureFillDirectory = path.dirname(require.resolve('picturefill'));
 
@@ -43,20 +43,19 @@ module.exports = {
     const options = registry.app.options && registry.app.options.picturefill || {};
     log('Using options:', options);
 
-    const disabled = !!options.disableTransform || false;
+    const imgTagTransform = options.imgTagTransform || false;
 
-    if (disabled) {
-      log('HTMLBars plugin disabled');
-      return;
+    if (imgTagTransform) {
+      log('Registering `img` tag transform');
+      registry.add('htmlbars-ast-plugin', {
+        name: 'ember-picturefill:img-tag-transform',
+        plugin: ImgTagTransform,
+        baseDir: function() {
+          return __dirname;
+        }
+      });
+    } else {
+      log('`img` tag transform disabled');
     }
-
-    log('Registering HTMLBars plugin');
-    registry.add('htmlbars-ast-plugin', {
-      name: 'ember-steps',
-      plugin: EmberPicturefillPlugin,
-      baseDir: function() {
-        return __dirname;
-      }
-    });
   }
 };
