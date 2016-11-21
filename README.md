@@ -1,6 +1,6 @@
 # `ember-picturefill`
 
-[![Ember Versions](https://embadge.io/v1/badge.svg?start=2.4.0)](#compatibility-note)
+[![Build Status](https://travis-ci.org/alexlafroscia/ember-picturefill.svg?branch=master)](https://travis-ci.org/alexlafroscia/ember-picturefill) [![Ember Versions](https://embadge.io/v1/badge.svg?start=2.4.0)](#compatibility-note)
 
 A small Ember library to better integrate with [Picturefill][picturefill]
 
