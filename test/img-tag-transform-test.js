@@ -3,7 +3,7 @@
 const expect = require('chai').expect;
 
 const ImgTagTransform = require('../lib/htmlbars-plugins/img-tag-transform');
-const compile = require('../lib/utils').compile([ImgTagTransform]);
+const compile = require('../lib/utils').compileWithPlugins([ImgTagTransform]);
 
 describe('<img> tag transformation', function() {
   it('can transform an <img> into a {{pf-img}}', function() {
