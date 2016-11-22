@@ -14,11 +14,11 @@ node_js:
   - "4"
 
 cache:
+  yarn: true
   directories:
     - node_modules
 
 env:
-  # we recommend testing LTS's and latest stable release (bonus points to beta/canary)
   - EMBER_TRY_SCENARIO=ember-lts-2.4
   - EMBER_TRY_SCENARIO=ember-release
   - EMBER_TRY_SCENARIO=ember-beta
@@ -35,15 +35,15 @@ before_install:
   - sh -e /etc/init.d/xvfb start
   # Other setup
   - npm config set spin false
-  - npm install -g bower
+  - npm install -g bower yarn
   - bower --version
 
 install:
-  - npm install
+  - yarn install
   - bower install
 
 script:
   # Usually, it's ok to finish the test scenario without reverting
   #  to the addon's original dependency state, skipping "cleanup".
-  - npm run test:mocha
+  - yarn run test:mocha
   - ember try:one $EMBER_TRY_SCENARIO test --skip-cleanup
