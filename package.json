@@ -12,7 +12,10 @@
     "test": "mocha && ember try:each",
     "test:mocha": "mocha"
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexlafroscia/ember-picturefill.git"
+  },
   "engines": {
     "node": ">= 0.12.0"
   },
