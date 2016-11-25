@@ -1,19 +1,24 @@
 /* eslint-env node */
 'use strict';
 
-var log = require('debug')('ember-picturefill:addon');
 var path = require('path');
+var readdirSync = require('fs').readdirSync;
+
+var log = require('debug')('ember-picturefill:addon');
 var mergeTrees = require('broccoli-merge-trees');
 var Funnel = require('broccoli-funnel');
 var ImgTagTransform = require('./lib/htmlbars-plugins/img-tag-transform');
 
 var pictureFillDirectory = path.dirname(require.resolve('picturefill'));
+var pictureFillPluginDirectory = path.resolve(pictureFillDirectory, './plugins');
+var pluginWhitelist = readdirSync(pictureFillPluginDirectory);
 
 module.exports = {
   name: 'ember-picturefill',
 
   treeForVendor(tree) {
     log(`Using package directory: ${pictureFillDirectory}`);
+    log(`Using plugin directory: ${pictureFillPluginDirectory}`);
 
     var trees = [];
 
@@ -29,9 +34,17 @@ module.exports = {
 
   included(app) {
     var vendor = this.treePaths.vendor;
+
     app.import({
       development: `${vendor}/picturefill.js`,
       production: `${vendor}/picturefill.min.js`
+    });
+
+    this.options.plugins.forEach(function(pluginName) {
+      app.import({
+        development: `${vendor}/plugins/${pluginName}/pf.${pluginName}.js`,
+        production: `${vendor}/plugins/${pluginName}/pf.${pluginName}.min.js`
+      });
     });
   },
 
@@ -40,12 +53,9 @@ module.exports = {
       return;
     }
 
-    const options = registry.app.options && registry.app.options.picturefill || {};
-    log('Using options:', options);
+    this._setupOptions(registry.app);
 
-    const imgTagTransform = options.imgTagTransform || false;
-
-    if (imgTagTransform) {
+    if (this.options.imgTagTransform) {
       log('Registering `img` tag transform');
       registry.add('htmlbars-ast-plugin', {
         name: 'ember-picturefill:img-tag-transform',
@@ -56,6 +66,23 @@ module.exports = {
       });
     } else {
       log('`img` tag transform disabled');
+    }
+  },
+
+  _setupOptions(app) {
+    if (!this.options) {
+      this.options = app.options && app.options.picturefill || {};
+
+      // Default `imgTagTransform` to `false`
+      this.options.imgTagTransform = this.options.imgTagTransform || false;
+
+      // Ensure that the `plugins` array exists, and that all are valid
+      this.options.plugins = (this.options.plugins || [])
+        .filter(function(pluginName) {
+          return pluginWhitelist.indexOf(pluginName) > -1;
+        });
+
+      log('Using options:', this.options);
     }
   }
 };

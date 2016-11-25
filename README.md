@@ -88,13 +88,18 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
     picturefill: {
-      imgTagTransform: false // Enable/disable the `<img>` -> `{{pf-img}}` transform
+      imgTagTransform: false, // Enable/disable the `<img>` -> `{{pf-img}}` transform
+      plugins: []             // Picturefill plugins to include
     }
   });
 
   return app.toTree();
 };
 ```
+
+### Plugins
+
+Picturefill has a number of plugins that can be used with the library. If you want to include one of them, you can do so by adding the plugin name to the `plugins` array of the configuration. See the [plugin directory][picturefill-plugins] for a list of names.
 
 ## Good Stuff to Know
 
@@ -108,3 +113,4 @@ There are a few other nice things about this wrapper that I wanted to highlight:
 Officially, this addon supports Ember 2.4 and up.  The `{{pf-img}}` component should work on things lower than that, but there were issues with the HTMLBars transform.  If you need support below 2.4, try disabling the transform and you should be fine.
 
 [picturefill]: https://github.com/scottjehl/picturefill
+[picturefill-plugins]: https://github.com/scottjehl/picturefill/tree/master/dist/plugins
