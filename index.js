@@ -35,6 +35,12 @@ module.exports = {
   included(app) {
     var vendor = this.treePaths.vendor;
 
+    // Don't import any packages in the Fastboot build
+    // `picturefill` requires the `window.navigator` object
+    if (process.env.EMBER_CLI_FASTBOOT) {
+      return;
+    }
+
     app.import({
       development: `${vendor}/picturefill.js`,
       production: `${vendor}/picturefill.min.js`
