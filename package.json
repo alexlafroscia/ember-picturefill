@@ -1,6 +1,6 @@
 {
   "name": "ember-picturefill",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A small Ember library to better integrate with Picturefill",
   "directories": {
     "doc": "doc",
