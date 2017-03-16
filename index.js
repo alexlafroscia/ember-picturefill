@@ -46,7 +46,7 @@ module.exports = {
       production: `${vendor}/picturefill.min.js`
     });
 
-    this.options.plugins.forEach(function(pluginName) {
+    this.pictureFillOptions.plugins.forEach(function(pluginName) {
       app.import({
         development: `${vendor}/plugins/${pluginName}/pf.${pluginName}.js`,
         production: `${vendor}/plugins/${pluginName}/pf.${pluginName}.min.js`
@@ -61,7 +61,7 @@ module.exports = {
 
     this._setupOptions(registry.app);
 
-    if (this.options.imgTagTransform) {
+    if (this.pictureFillOptions.imgTagTransform) {
       log('Registering `img` tag transform');
       registry.add('htmlbars-ast-plugin', {
         name: 'ember-picturefill:img-tag-transform',
@@ -76,19 +76,23 @@ module.exports = {
   },
 
   _setupOptions(app) {
-    if (!this.options) {
-      this.options = app.options && app.options.picturefill || {};
+    if (this.options && this.options.picturefill) {
+      this.pictureFillOptions = this.pictureFillOptions.picturefill;
+    }
+
+    if (!this.pictureFillOptions) {
+      this.pictureFillOptions = app.options && app.options.picturefill || {};
 
       // Default `imgTagTransform` to `false`
-      this.options.imgTagTransform = this.options.imgTagTransform || false;
+      this.pictureFillOptions.imgTagTransform = this.pictureFillOptions.imgTagTransform || false;
 
       // Ensure that the `plugins` array exists, and that all are valid
-      this.options.plugins = (this.options.plugins || [])
+      this.pictureFillOptions.plugins = (this.pictureFillOptions.plugins || [])
         .filter(function(pluginName) {
           return pluginWhitelist.indexOf(pluginName) > -1;
         });
 
-      log('Using options:', this.options);
+      log('Using options:', this.pictureFillOptions);
     }
   }
 };
