@@ -15,6 +15,7 @@ describe('<img> tag transformation', function() {
     `);
 
     expect(source).to.deep.equal(target);
+    expect(source.toString()).to.contain('pf-img');
   });
 
   it('can pass attributes down to the <img> tag', function() {
@@ -44,6 +45,6 @@ describe('<img> tag transformation', function() {
       <img src="foo.png" />
     `);
 
-    expect(source).to.be.empty;
+    expect(source.toString()).not.to.contain('pf-img');
   });
 });
