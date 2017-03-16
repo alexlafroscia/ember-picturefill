@@ -37,8 +37,9 @@ before_install:
   - sh -e /etc/init.d/xvfb start
   # Other setup
   - npm config set spin false
-  - npm install -g bower yarn
+  - npm install -g bower yarn phantomjs-prebuilt
   - bower --version
+  - phantomjs --version
 
 install:
   - yarn install
@@ -47,4 +48,4 @@ install:
 script:
   # Usually, it's ok to finish the test scenario without reverting
   # to the addon's original dependency state, skipping "cleanup".
-  - ember try:one $EMBER_TRY_SCENARIO --skip-cleanup=true --- yarn test
+  - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO --skip-cleanup=true --- yarn test
