@@ -40,7 +40,7 @@
     "ember-cli-uglify": "^1.2.0",
     "ember-disable-prototype-extensions": "^1.1.0",
     "ember-export-application-global": "^1.0.5",
-    "ember-load-initializers": "0.6.0",
+    "ember-load-initializers": "^0.6.3",
     "ember-resolver": "^2.0.3",
     "ember-source": "2.12.0",
     "ember-welcome-page": "2.0.2",
@@ -55,7 +55,7 @@
     "broccoli-funnel": "^1.0.7",
     "broccoli-merge-trees": "^1.1.4",
     "debug": "^2.2.0",
-    "ember-cli-babel": "^5.1.7",
+    "ember-cli-babel": "^5.2.4",
     "picturefill": "^3.0.2",
     "testdouble-chai": "^0.5.0"
   },
