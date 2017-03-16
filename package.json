@@ -7,7 +7,6 @@
     "test": "tests"
   },
   "scripts": {
-    "preinstall": "bower install",
     "build": "ember build",
     "start": "ember server",
     "test": "mocha && ember test"
