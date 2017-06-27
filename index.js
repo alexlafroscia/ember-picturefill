@@ -2,11 +2,11 @@
 'use strict';
 
 var path = require('path');
-var readdirSync = require('fs').readdirSync;
-
-var log = require('debug')('ember-picturefill:addon');
-var mergeTrees = require('broccoli-merge-trees');
 var Funnel = require('broccoli-funnel');
+var readdirSync = require('fs').readdirSync;
+var mergeTrees = require('broccoli-merge-trees');
+var log = require('debug')('ember-picturefill:addon');
+var UnwatchedDir = require('broccoli-source').UnwatchedDir;
 var ImgTagTransform = require('./lib/htmlbars-plugins/img-tag-transform');
 
 var pictureFillDirectory = path.dirname(require.resolve('picturefill'));
@@ -26,7 +26,7 @@ module.exports = {
       trees.push(tree);
     }
 
-    var pictureFillTree = new Funnel(pictureFillDirectory);
+    var pictureFillTree = new Funnel(new UnwatchedDir(pictureFillDirectory));
     trees.push(pictureFillTree);
 
     return mergeTrees(trees);
