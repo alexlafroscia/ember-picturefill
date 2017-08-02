@@ -3,6 +3,7 @@
 
 var path = require('path');
 var Funnel = require('broccoli-funnel');
+var map = require('broccoli-stew').map;
 var readdirSync = require('fs').readdirSync;
 var mergeTrees = require('broccoli-merge-trees');
 var log = require('debug')('ember-picturefill:addon');
@@ -16,30 +17,18 @@ var pluginWhitelist = readdirSync(pictureFillPluginDirectory);
 module.exports = {
   name: 'ember-picturefill',
 
-  treeForVendor(tree) {
+  treeForVendor(defaultTree) {
     log(`Using package directory: ${pictureFillDirectory}`);
     log(`Using plugin directory: ${pictureFillPluginDirectory}`);
 
-    var trees = [];
+    var browserVendorLib = new Funnel(new UnwatchedDir(pictureFillDirectory));
+    browserVendorLib = map(browserVendorLib, (content) => `if (typeof FastBoot === 'undefined') { ${content} }`);
 
-    if (tree) {
-      trees.push(tree);
-    }
-
-    var pictureFillTree = new Funnel(new UnwatchedDir(pictureFillDirectory));
-    trees.push(pictureFillTree);
-
-    return mergeTrees(trees);
+    return new mergeTrees([defaultTree, browserVendorLib]);
   },
 
   included(app) {
     var vendor = this.treePaths.vendor;
-
-    // Don't import any packages in the Fastboot build
-    // `picturefill` requires the `window.navigator` object
-    if (process.env.EMBER_CLI_FASTBOOT) {
-      return;
-    }
 
     app.import({
       development: `${vendor}/picturefill.js`,
