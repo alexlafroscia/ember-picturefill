@@ -24,7 +24,11 @@ module.exports = {
     var browserVendorLib = new Funnel(new UnwatchedDir(pictureFillDirectory));
     browserVendorLib = map(browserVendorLib, (content) => `if (typeof FastBoot === 'undefined') { ${content} }`);
 
-    return new mergeTrees([defaultTree, browserVendorLib]);
+    if (defaultTree) {
+      return new mergeTrees([defaultTree, browserVendorLib]);
+    } else {
+      return browserVendorLib;
+    }
   },
 
   included(app) {
