@@ -52,9 +52,9 @@
   ],
   "dependencies": {
     "broccoli-funnel": "^1.0.7",
-    "broccoli-stew": "^1.5.0",
     "broccoli-merge-trees": "^1.1.4",
     "broccoli-source": "^1.1.0",
+    "broccoli-stew": "^1.5.0",
     "debug": "^2.2.0",
     "ember-cli-babel": "^5.2.4",
     "picturefill": "^3.0.2",
